@@ -6,17 +6,18 @@ import actions from './actions';
 
 export function* getData() {
   yield takeEvery(actions.GET_DATA_REQUEST, function*({ payload }) {
-    const { username } = payload;
     const params = {
-      username,
+      url: 'https://dev.requiemapp.com/public/memorial/random',
+      method: 'GET',
     };
 
     try {
-      yield call(httpApi.logOut, params);
-      yield put(actions.logoutSuccess());
-      yield put(push('/'));
+      const response = yield call(axios, params);
+      const { data } = response.data;
+
+      yield put(actions.getDataSuccess(data));
     } catch (error) {
-      yield put(actions.logoutFailed(error));
+      yield put(actions.getDataFailed(error));
     }
   });
 }
