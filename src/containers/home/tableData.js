@@ -1,6 +1,9 @@
+import React from 'react';
+import IntlMessage from '../../components/intlMessages';
+
 export const columns = [
   {
-    title: 'Name',
+    title: <IntlMessage id="table.name" />,
     dataIndex: 'name',
     render: (text, record) => {
       const { name } = record;
@@ -15,7 +18,7 @@ export const columns = [
     },
   },
   {
-    title: 'Creation Date',
+    title: <IntlMessage id="table.creationDate" />,
     dataIndex: 'creationDate',
     render: (text, record) => {
       const date = new Date(record.creationDate);

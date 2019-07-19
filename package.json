@@ -7,6 +7,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js",
+    "lint:watch": "esw --clear --watch --color src/**/*.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

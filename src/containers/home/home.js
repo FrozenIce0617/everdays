@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
 
+import LanguageSwitcher from '../../components/languageSwitcher';
 import { columns } from './tableData';
 import { dateCompare, nameCompare } from '../../helpers/sort';
 import authActions from '../../redux/api/actions';
@@ -37,8 +38,10 @@ class Home extends Component {
 
     return (
       <div className="home-container">
-        <Button onClick={this.toggleSortOrder}>{btnText}</Button>
-        <br />
+        <div className="home-tools">
+          <LanguageSwitcher />
+          <Button onClick={this.toggleSortOrder}>{btnText}</Button>
+        </div>
         <Table columns={columns} dataSource={tableData} />
       </div>
     );

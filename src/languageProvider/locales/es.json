@@ -1,3 +1,5 @@
 {
-  "title": "titel"
+  "title": "título",
+  "table.name": "Nombre",
+  "table.creationDate": "Fecha de creación"
 }
