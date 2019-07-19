@@ -40,7 +40,7 @@ jobs:
           command: |
             sudo apt-get install python-pip python-dev build-essential
             sudo pip install --upgrade setuptools
-            sudo pip install awsebcli --upgrade
+            sudo pip install awscli --upgrade
       # Create AWS Credentials
       - run:
           name: Create AWS credentials manually
