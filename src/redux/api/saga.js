@@ -4,10 +4,12 @@ import axios from 'axios';
 
 import actions from './actions';
 
+const API_URI = 'https://dev.requiemapp.com/public/memorial/random';
+
 export function* getData() {
   yield takeEvery(actions.GET_DATA_REQUEST, function*({ payload }) {
     const params = {
-      url: 'https://dev.requiemapp.com/public/memorial/random',
+      url: API_URI,
       method: 'GET',
     };
 

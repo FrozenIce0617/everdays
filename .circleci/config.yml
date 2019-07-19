@@ -1,0 +1,69 @@
+version: 2
+
+jobs:
+  # The test and deploy job
+  test_and_deploy:
+    docker:
+      - image: circleci/node:10.15.3
+    steps:
+      # Checkout the code from the branch into the working_directory
+      - checkout
+      # Log the current branch
+      - run:
+          name: Show current branch
+          command: echo ${CIRCLE_BRANCH}
+      # Restore local dependencies from cache
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      # Install project dependencies
+      - run:
+          name: Install project dependencies
+          command: yarn
+      - run:
+          name: Testing
+          command: yarn test:ci
+      # Cache local dependencies if they don't exist
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Building
+          command: |
+            CI="" yarn build
+
+      # Install AWS EB Cli
+      - run:
+          name: Install AWS EB cli
+          command: |
+            sudo apt-get install python-pip python-dev build-essential
+            sudo pip install --upgrade setuptools
+            sudo pip install awsebcli --upgrade
+      # Create AWS Credentials
+      - run:
+          name: Create AWS credentials manually
+          command: |
+            mkdir ~/.aws
+            touch ~/.aws/config
+            chmod 600 ~/.aws/config
+            echo "[profile eb-cli]" > ~/.aws/config
+            echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/config
+            echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/config
+
+      # Deploy to S3
+      - run:
+          name: Deploy to EB
+          command: |
+            aws s3 sync build/ s3://everdays
+workflows:
+  version: 2
+  # The build and deploy workflow
+  test_and_deploy:
+    jobs:
+      - test_and_deploy:
+          filters:
+            branches:
+              only:
+                - master
